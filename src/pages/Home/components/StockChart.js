@@ -58,8 +58,8 @@ const StockChart = ({ data }) => {
   }, [data]);
 
   return (
-    <div>
-      <div id="resultCompany">1 Year Open & Close Price</div>
+    <div className="mt-2 p-1">
+      <h2 className="text-xl font-bold mb-4">Stock 1 Year Historical Values</h2>
       <div id="chart">
         <canvas ref={chartRef}></canvas>
       </div>

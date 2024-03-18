@@ -6,91 +6,11 @@ import StockNews from "./components/StockNews";
 import StockPrediction from "./components/StockPrediction";
 import StockInfo from "./components/StockInfo";
 
-const stocks = [
-  { symbol: "AAPL", name: "Apple Inc." },
-  { symbol: "AMZN", name: "Amazon.com Inc." },
-  { symbol: "GOOG", name: "Alphabet Inc." },
-  { symbol: "MSFT", name: "Microsoft Corporation" },
-  { symbol: "FB", name: "Meta Platforms, Inc." },
-  { symbol: "TSLA", name: "Tesla, Inc." },
-  { symbol: "NVDA", name: "NVIDIA Corporation" },
-  { symbol: "JPM", name: "JPMorgan Chase & Co." },
-  { symbol: "JNJ", name: "Johnson & Johnson" },
-  { symbol: "V", name: "Visa Inc." },
-  // Additional Canadian stocks
-  { symbol: "RY", name: "Royal Bank of Canada" },
-  { symbol: "TD", name: "Toronto-Dominion Bank" },
-  { symbol: "BNS", name: "Bank of Nova Scotia" },
-  { symbol: "BMO", name: "Bank of Montreal" },
-  { symbol: "CM", name: "Canadian Imperial Bank of Commerce" },
-  { symbol: "TRP", name: "TC Energy Corporation" },
-  { symbol: "ENB", name: "Enbridge Inc." },
-  { symbol: "SHOP", name: "Shopify Inc." },
-  { symbol: "AC", name: "Air Canada" },
-  { symbol: "MG", name: "Magna International Inc." },
-  // More Canadian stocks
-  { symbol: "ATD", name: "Alimentation Couche-Tard Inc." },
-  { symbol: "CNQ", name: "Canadian Natural Resources Limited" },
-  { symbol: "SU", name: "Suncor Energy Inc." },
-  { symbol: "CP", name: "Canadian Pacific Railway Limited" },
-  { symbol: "IMO", name: "Imperial Oil Limited" },
-  { symbol: "CVE", name: "Cenovus Energy Inc." },
-  { symbol: "GOLD", name: "Barrick Gold Corporation" },
-  { symbol: "TECK", name: "Teck Resources Limited" },
-  { symbol: "RBA", name: "Ritchie Bros. Auctioneers Incorporated" },
-  { symbol: "RCI", name: "Rogers Communications Inc." },
-  // More Canadian stocks
-  { symbol: "BCE", name: "BCE Inc." },
-  { symbol: "POW", name: "Power Corporation of Canada" },
-  { symbol: "PPL", name: "Pembina Pipeline Corporation" },
-  { symbol: "FM", name: "First Quantum Minerals Ltd." },
-  { symbol: "WPM", name: "Wheaton Precious Metals Corp." },
-  { symbol: "CU", name: "Canadian Utilities Limited" },
-  { symbol: "ECA", name: "Encana Corporation" },
-  { symbol: "VRX", name: "Valeant Pharmaceuticals International, Inc." },
-  { symbol: "BBD", name: "Bombardier Inc." },
-  { symbol: "ENF", name: "Enbridge Income Fund Holdings Inc." },
-  // Another batch of Canadian stocks
-  { symbol: "CCO", name: "Cameco Corporation" },
-  { symbol: "BB", name: "BlackBerry Limited" },
-  { symbol: "CPG", name: "Crescent Point Energy Corp." },
-  { symbol: "FTS", name: "Fortis Inc." },
-  { symbol: "L", name: "Loblaw Companies Limited" },
-  { symbol: "TRI", name: "Thomson Reuters Corporation" },
-  { symbol: "SNC", name: "SNC-Lavalin Group Inc." },
-  { symbol: "GWO", name: "Great-West Lifeco Inc." },
-  { symbol: "CMG", name: "Chipotle Mexican Grill, Inc." },
-  { symbol: "MFC", name: "Manulife Financial Corporation" },
-  // Add more Canadian stocks, ETFs, or other entities here
-  // Additional stocks
-  { symbol: "NFLX", name: "Netflix, Inc." },
-  { symbol: "DIS", name: "The Walt Disney Company" },
-  { symbol: "PYPL", name: "PayPal Holdings, Inc." },
-  { symbol: "BRK", name: "Berkshire Hathaway Inc." },
-  { symbol: "INTC", name: "Intel Corporation" },
-  { symbol: "T", name: "AT&T Inc." },
-  { symbol: "IBM", name: "International Business Machines Corporation" },
-  { symbol: "CSCO", name: "Cisco Systems, Inc." },
-  { symbol: "PFE", name: "Pfizer Inc." },
-  { symbol: "HD", name: "The Home Depot, Inc." },
-  { symbol: "VZ", name: "Verizon Communications Inc." },
-  { symbol: "PG", name: "Procter & Gamble Company" },
-  { symbol: "MRK", name: "Merck & Co., Inc." },
-  { symbol: "KO", name: "The Coca-Cola Company" },
-  { symbol: "PEP", name: "PepsiCo, Inc." },
-  { symbol: "BAC", name: "Bank of America Corporation" },
-  { symbol: "XOM", name: "Exxon Mobil Corporation" },
-  { symbol: "C", name: "Citigroup Inc." },
-  { symbol: "CVX", name: "Chevron Corporation" },
-  { symbol: "WMT", name: "Walmart Inc." },
-  { symbol: "WFC", name: "Wells Fargo & Company" },
-  { symbol: "ORCL", name: "Oracle Corporation" },
-];
+import stocks from "../../assets/stockList";
 
 const Home = () => {
   const [query, setQuery] = useState("");
   const [data, setData] = useState(null);
-  const [randomizedStocks, setRandomizedStocks] = useState([]);
   const [stockNews, setStockNews] = useState([]);
   const [stockInfo, setStockInfo] = useState(null);
   const [stockPrediction, setStockPrediction] = useState(null);
@@ -101,6 +21,7 @@ const Home = () => {
       if (response.ok) {
         const jsonData = await response.json();
         setData(jsonData);
+        // console.log(jsonData);
         if (jsonData.symbol) {
           const newsResponse = await fetch(
             `http://127.0.0.1:8000/stock-news/${jsonData.symbol}`
@@ -121,7 +42,8 @@ const Home = () => {
           );
           if (predictionResponse.ok) {
             const predictionData = await predictionResponse.json();
-            setStockPrediction(predictionData.result);
+            setStockPrediction(predictionData);
+            // console.log(predictionData);
           }
         }
       } else {
@@ -134,8 +56,15 @@ const Home = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setData(null); // Reset data when component mounts or query changes
     fetchData(query);
   };
+
+  // Dompurify
+  // const handleInputChange = (e) => {
+  //   const sanitizedInput = DOMPurify.sanitize(e.target.value);
+  //   setQuery(sanitizedInput);
+  // };
 
   return (
     <div className="bg-gray-800 min-h-screen flex flex-col items-center">
@@ -172,19 +101,106 @@ const Home = () => {
       </div>
       <div>
         {data ? (
+          // If stock data is available, display the stock data
           <div
             id="tabs"
-            className="bg-white w-full flex flex-col items-center justify-center mt-10 p-10"
+            className="bg-white w-full flex flex-col items-center justify-center mt-10"
           >
-            <h1 className="text-3xl font-semibold mb-4">{data.name}</h1>
-            <StockInfo stockInfo={stockInfo} />
-            <StockChart data={data} />
-            <StockData data={data} />
-            <CompoundInterestCalculator />
-            <StockNews stockNews={stockNews} />
-            <StockPrediction stockPrediction={stockPrediction} />
+            <div
+              id="banner"
+              className="animate-text bg-gradient-to-r from-blue-500 to-purple-600 w-full p-10 flex justify-between items-center"
+              aria-label="Stock information banner"
+            >
+              <div className="text-white" aria-label="Company details">
+                <h2
+                  className="text-xl font-bold mb-2"
+                  aria-label="Company name"
+                >
+                  {stockInfo?.longName || "Company Name"}
+                </h2>
+                <p className="mb-2" aria-label="Stock symbol">
+                  ({data?.symbol || "TSLA"})
+                </p>
+                <a
+                  href={stockInfo?.website || "#"}
+                  className="underline mb-2"
+                  aria-label="Company website link"
+                >
+                  {stockInfo?.website || "Not available"}
+                </a>
+              </div>
+              <div
+                className="text-white text-right"
+                aria-label="Stock trading data"
+              >
+                <p
+                  className="text-2xl font-bold"
+                  aria-label="Current stock price"
+                >
+                  ${stockInfo?.currentPrice.toFixed(2) || "0.00"}
+                  <span
+                    className="text-green-300"
+                    aria-label="Price change and percentage increase"
+                  >
+                    +${stockInfo?.dayHigh.toFixed(2) || "0.00"} (+
+                    {(
+                      (stockInfo?.dayHigh / stockInfo?.previousClose - 1) *
+                      100
+                    ).toFixed(2) || "0.00"}
+                    %)
+                  </span>
+                </p>
+                <p aria-label="Bid price and size">
+                  Bid: ${stockInfo?.bid.toFixed(2) || "0.00"} x{" "}
+                  {stockInfo?.bidSize || "0"}
+                </p>
+                <p aria-label="Ask price and size">
+                  Ask: ${stockInfo?.ask.toFixed(2) || "0.00"} x{" "}
+                  {stockInfo?.askSize || "0"}
+                </p>
+                <p aria-label="Daily trading volume">
+                  Volume: {stockInfo?.volume.toLocaleString() || "0"}
+                </p>
+                <p aria-label="Last update time">
+                  Updated at:{" "}
+                  {new Date(stockInfo?.dateShortInterest * 1000).toLocaleString(
+                    "en-US",
+                    {
+                      hour: "numeric",
+                      minute: "numeric",
+                      hour12: true,
+                      timeZoneName: "short",
+                      timeZone: "America/New_York",
+                    }
+                  ) || "Time unavailable"}
+                </p>
+              </div>
+            </div>
+
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 p-10">
+              <div className="md:col-span-1 lg:col-span-1">
+                <StockInfo stockInfo={stockInfo} />
+              </div>
+              <div className="md:col-span-2 lg:col-span-1">
+                <StockPrediction
+                  stockPrediction={stockPrediction}
+                  stockData={data}
+                />
+              </div>
+              <div className="md:col-span-2 lg:col-span-1">
+                <CompoundInterestCalculator stockInfo={stockInfo} />
+                <StockChart data={data} />
+                <StockData data={data} />
+              </div>
+              <div className="md:col-span-2 lg:col-span-1">
+                <StockNews stockNews={stockNews} />
+              </div>
+              <div className="md:col-span-2 lg:col-span-1"></div>
+              <div className="md:col-span-2 lg:col-span-1"></div>
+            </div>
           </div>
         ) : (
+          // If no stock data is available, display the stock list
           <div className="w-full flex flex-col items-center justify-center mt-10 p-10">
             <h1 className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 font-extrabold text-4xl md:text-6xl lg:text-8xl animate-text mb-4">
               StockUP

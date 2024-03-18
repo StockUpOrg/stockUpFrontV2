@@ -8,33 +8,33 @@ function Navbar() {
           width={50}
           height={50}
         />
-        <span className="font-semibold text-xl tracking-tight pl-4">
-          Stock Up
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 font-extrabold text-2xl animate-text pl-10">
+          StockUP
         </span>
       </div>
       <div className="w-full lg:w-auto lg:flex-grow lg:flex lg:items-center">
         <div className="text-sm lg:flex-grow text-right">
           <a
             href="/"
-            className="block mt-4 lg:mt-0 lg:inline-block text-teal-200 hover:text-white mr-4"
+            className="block mt-4 lg:mt-0 lg:inline-block text-teal-200 hover:text-white mr-4 text-xl font-semibold"
           >
             Home
           </a>
           <a
             href="/prediction"
-            className="block mt-4 lg:mt-0 lg:inline-block text-teal-200 hover:text-white mr-4"
+            className="block mt-4 lg:mt-0 lg:inline-block text-teal-200 hover:text-white mr-4 text-xl font-semibold"
           >
-            Predict
+            Forecast
           </a>
           <a
             href="/about"
-            className="block mt-4 lg:mt-0 lg:inline-block text-teal-200 hover:text-white mr-4"
+            className="block mt-4 lg:mt-0 lg:inline-block text-teal-200 hover:text-white mr-4 text-xl font-semibold"
           >
             About Us
           </a>
           <a
             href="/contact"
-            className="block mt-4 lg:mt-0 lg:inline-block text-teal-200 hover:text-white"
+            className="block mt-4 lg:mt-0 lg:inline-block text-teal-200 hover:text-white text-xl font-semibold"
           >
             Contact
           </a>

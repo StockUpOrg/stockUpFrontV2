@@ -4,7 +4,7 @@ import "./App.css";
 // In App.js
 import Layout from "./Layout"; // Import the Layout component
 import About from "./pages/About";
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 import Contact from "./pages/Contact";
 import Prediction from "./pages/Prediction";
 

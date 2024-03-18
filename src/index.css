@@ -13,22 +13,31 @@
   /* Additional styling for the main content area */
 }
 
-@keyframes fadeIn {
-  from {
+@keyframes textGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-text {
+  background-size: 200% auto;
+  animation: textGradient 5s linear infinite;
+}
+
+@keyframes blink {
+  50% {
     opacity: 0;
   }
-  to {
-    opacity: 1;
-  }
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-.divider-line {
-  border-bottom: 1px solid #ccc; /* Grey horizontal border */
-  margin-bottom: 16px; /* Add some margin after the divider */
+.animate-blink {
+  animation: blink 1s infinite;
 }
 
 
@@ -44,4 +53,48 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+@keyframes slide-up-coins {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+.slide {
+  display: grid;
+  gap: 20px; /* Adjust based on your margin */
+  animation: slide-up-coins 30s linear infinite;
+}
+
+@media (min-width: 768px) {
+  .slide {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .slide {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .slide {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+
+/* Hide scrollbar */
+.slide::-webkit-scrollbar {
+  display: none;
+}
+
+.slide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }

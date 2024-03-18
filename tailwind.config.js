@@ -2,9 +2,23 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
-    animation: {
-      "fade-in": "fadeIn 1s ease-out", // Define the fade-in animation
+    // Other theme configurations
+    extend: {
+      keyframes: {
+        gradientX: {
+          "0%, 100%": {
+            backgroundSize: "200% 200%",
+            backgroundPosition: "left center",
+          },
+          "50%": {
+            backgroundSize: "200% 200%",
+            backgroundPosition: "right center",
+          },
+        },
+      },
+      animation: {
+        "gradient-x": "gradientX 8s ease infinite",
+      },
     },
   },
   plugins: [

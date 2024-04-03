@@ -6,7 +6,8 @@ const StockPrediction = ({ stockPrediction, stockData }) => {
   const [lastForecastValue, setLastForecastValue] = useState(null);
   const [change, setChange] = useState(null);
   const [changePercentage, setChangePercentage] = useState(null);
-  const [todayValue, setTodayValue] = useState(null); // Define todayValue state
+  const [todayValue, setTodayValue] = useState(null);
+  const [selectedPeriod, setSelectedPeriod] = useState(30); // Default period is 30 days
 
   const chartRef = useRef(null);
 
@@ -31,17 +32,15 @@ const StockPrediction = ({ stockPrediction, stockData }) => {
 
     const firstStockData = stockData.stock_data[0];
     const todayValue = (firstStockData.open + firstStockData.close) / 2;
-    setTodayValue(todayValue); // Set todayValue state
+    setTodayValue(todayValue);
 
     const firstPredictionDate = new Date(stockPrediction.result[0][0]);
-    const sevenDaysBefore = new Date(
-      firstPredictionDate.getTime() - 7 * 24 * 60 * 60 * 1000
-    );
-
+    const periodInMilliseconds = selectedPeriod * 24 * 60 * 60 * 1000;
     const historicalData = stockData.stock_data
       .filter(
         (data) =>
-          new Date(data.date) >= sevenDaysBefore &&
+          new Date(data.date) >=
+            new Date(firstPredictionDate.getTime() - periodInMilliseconds) &&
           new Date(data.date) < firstPredictionDate
       )
       .map((data) => ({
@@ -147,7 +146,29 @@ const StockPrediction = ({ stockPrediction, stockData }) => {
         chartRef.current.destroy();
       }
     };
-  }, [stockPrediction, stockData]);
+  }, [stockPrediction, stockData, selectedPeriod]);
+
+  const handlePeriodChange = (period) => {
+    setSelectedPeriod(period);
+    const periodInMilliseconds = period * 24 * 60 * 60 * 1000;
+    const filteredPredictionData = stockPrediction.result
+      .filter(
+        ([date]) =>
+          new Date(date) >= new Date() &&
+          new Date(date) <=
+            new Date(new Date().getTime() + periodInMilliseconds)
+      )
+      .map(([date, prediction]) => ({
+        x: new Date(date),
+        y: prediction,
+      }));
+
+    const chartInstance = chartRef.current;
+    if (chartInstance) {
+      chartInstance.data.datasets[1].data = filteredPredictionData;
+      chartInstance.update();
+    }
+  };
 
   return (
     <div id="prediction" style={{ width: "100%", height: "500px" }}>
@@ -156,7 +177,7 @@ const StockPrediction = ({ stockPrediction, stockData }) => {
         <div style={{ width: "100%", height: "100%" }}>
           <h3>Prediction Results</h3>
           <p>
-            <strong>Forecast for 30 days:</strong>{" "}
+            <strong>Forecast for {selectedPeriod} days:</strong>{" "}
             <span
               style={{
                 color: change > 0 ? "green" : "red",
@@ -180,8 +201,44 @@ const StockPrediction = ({ stockPrediction, stockData }) => {
           </p>
           <canvas
             id="predictionChart"
-            style={{ width: "100%", height: "100%" }}
+            style={{ width: "100%", maxHeight: "100%" }}
           ></canvas>
+          <div className="flex justify-center space-x-4">
+            <button
+              onClick={() => handlePeriodChange(30)}
+              className={`px-4 py-2 border rounded-md ${
+                selectedPeriod === 30 ? "bg-blue-500 text-white" : "bg-white"
+              }`}
+            >
+              30 Days
+            </button>
+            <button
+              onClick={() => handlePeriodChange(90)}
+              className={`px-4 py-2 border rounded-md ${
+                selectedPeriod === 90 ? "bg-blue-500 text-white" : "bg-white"
+              }`}
+            >
+              Quater
+            </button>
+            <button
+              onClick={() => handlePeriodChange(365 / 2)}
+              className={`px-4 py-2 border rounded-md ${
+                selectedPeriod === 365 / 2
+                  ? "bg-blue-500 text-white"
+                  : "bg-white"
+              }`}
+            >
+              6 months
+            </button>
+            <button
+              onClick={() => handlePeriodChange(365)}
+              className={`px-4 py-2 border rounded-md ${
+                selectedPeriod === 365 ? "bg-blue-500 text-white" : "bg-white"
+              }`}
+            >
+              1 Year
+            </button>
+          </div>
         </div>
       ) : (
         <p>No data available</p>

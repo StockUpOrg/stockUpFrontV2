@@ -15,30 +15,32 @@ const Home = () => {
   const [stockInfo, setStockInfo] = useState(null);
   const [stockPrediction, setStockPrediction] = useState(null);
 
+  const domain = "https://api.stockup-advanceproject.online/";
+
   const fetchData = async (query) => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/stocks/${query}`);
+      const response = await fetch(`${domain}stocks/${query}/`);
       if (response.ok) {
         const jsonData = await response.json();
         setData(jsonData);
         // console.log(jsonData);
         if (jsonData.symbol) {
           const newsResponse = await fetch(
-            `http://127.0.0.1:8000/stock-news/${jsonData.symbol}`
+            `${domain}stock-news/${jsonData.symbol}/`
           );
           if (newsResponse.ok) {
             const newsData = await newsResponse.json();
             setStockNews(newsData.stock_news);
           }
           const infoResponse = await fetch(
-            `http://127.0.0.1:8000/stock-info/${jsonData.symbol}`
+            `${domain}stock-info/${jsonData.symbol}/`
           );
           if (infoResponse.ok) {
             const infoData = await infoResponse.json();
             setStockInfo(infoData.stock_info);
           }
           const predictionResponse = await fetch(
-            `http://127.0.0.1:8000/pre/${jsonData.symbol}`
+            `${domain}pre/${jsonData.symbol}/?days=365`
           );
           if (predictionResponse.ok) {
             const predictionData = await predictionResponse.json();

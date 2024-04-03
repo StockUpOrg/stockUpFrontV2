@@ -23,25 +23,17 @@ To get started with Stock Up on your local machine, follow these steps:
 
 1.  Clone the Repository
 
-    shCopy code
-
     `git clone https://github.com/StockUpOrg/stockUpFrontV2.git`
 
 2.  Navigate to the Project Directory
-
-    shCopy code
 
     `cd stockUpFrontV2`
 
 3.  Install Dependencies
 
-    shCopy code
-
     `npm install`
 
 4.  Start the Development Server
-
-    shCopy code
 
     `npm start`
 
